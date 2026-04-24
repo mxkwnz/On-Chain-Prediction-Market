@@ -191,7 +191,7 @@ contracts/
 
 ---
 
-## 8. DevOps and Deployment
+## 8. Deployment
 
 * GitHub Actions CI:
 
@@ -227,5 +227,3 @@ contracts/
 * Week 10: Final submission and presentation
 
 ---
-
-This plan ensures full coverage of all required components, balanced workload, and compliance with all technical and grading requirements .
