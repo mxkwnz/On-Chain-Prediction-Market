@@ -53,7 +53,6 @@ contract OracleAdapter is Initializable, OwnableUpgradeable, UUPSUpgradeable {
     function initialize(address _owner, address _governor) external initializer {
         if (_owner == address(0)) revert ZeroAddress();
         __Ownable_init(_owner);
-        __UUPSUpgradeable_init();
         stalenessThreshold = DEFAULT_STALENESS;
         disputeWindow = DEFAULT_DISPUTE_WINDOW;
         governor = _governor;

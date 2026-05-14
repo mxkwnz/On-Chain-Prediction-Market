@@ -3,7 +3,7 @@ pragma solidity ^0.8.24;
 
 import "forge-std/Test.sol";
 import "../contracts/OracleAdapter.sol";
-import "../contracts/mocks/MockAggregator.sol";
+import "../mocks/MockAggregator.sol";
 import "@openzeppelin/contracts/proxy/ERC1967/ERC1967Proxy.sol";
 
 contract OracleAdapterTest is Test {
@@ -18,6 +18,7 @@ contract OracleAdapterTest is Test {
     bytes32 public constant ETH_USD = keccak256("ETH/USD");
 
     function setUp() public {
+        vm.warp(1000 days);
         OracleAdapter impl = new OracleAdapter();
         bytes memory initData = abi.encodeCall(OracleAdapter.initialize, (owner, gov));
         ERC1967Proxy proxy = new ERC1967Proxy(address(impl), initData);
