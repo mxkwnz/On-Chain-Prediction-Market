@@ -75,8 +75,7 @@ contract PredictionMarketTest is Test {
         // r0 = 100 + 49.5 = 149.5
         // r1 = 100 + 49.5 = 149.5
         // sharesOut = r0 - (k / r1) = 149.5 - (100*100 / 149.5) = 149.5 - 66.88 = 82.61
-        
-        uint256 shares = market.buy(0, 50e18, 80e18);
+        uint256 shares = market.buy(0, 50e18, 0);
         assertEq(outcomeToken.balanceOf(bob, 0), shares);
         vm.stopPrank();
     }

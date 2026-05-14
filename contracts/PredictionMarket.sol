@@ -97,7 +97,7 @@ contract PredictionMarket is ERC1155Holder, ReentrancyGuard, Ownable {
     /**
      * @dev Buy outcome shares using CPMM.
      */
-    function buy(uint256 outcomeId, uint256 collateralAmount, uint256 minSharesOut) external onlyOpen nonReentrant {
+    function buy(uint256 outcomeId, uint256 collateralAmount, uint256 minSharesOut) external onlyOpen nonReentrant returns (uint256 sharesOut) {
         require(outcomeId <= 1, "Invalid outcome");
         require(collateralAmount > 0, "Amount must be > 0");
 
@@ -116,7 +116,7 @@ contract PredictionMarket is ERC1155Holder, ReentrancyGuard, Ownable {
         uint256 r0 = (outcomeId == 0) ? reserveYES + netCollateral : reserveNO + netCollateral;
         uint256 r1 = (outcomeId == 0) ? reserveNO + netCollateral : reserveYES + netCollateral;
 
-        uint256 sharesOut = CPMM.getSharesOut(r0, r1, netCollateral);
+        sharesOut = CPMM.getSharesOut(r0, r1, netCollateral);
         require(sharesOut >= minSharesOut, "Slippage too high");
 
         if (outcomeId == 0) {
@@ -134,7 +134,7 @@ contract PredictionMarket is ERC1155Holder, ReentrancyGuard, Ownable {
     /**
      * @dev Sell outcome shares back to AMM.
      */
-    function sell(uint256 outcomeId, uint256 sharesIn, uint256 minCollateralOut) external onlyOpen nonReentrant {
+    function sell(uint256 outcomeId, uint256 sharesIn, uint256 minCollateralOut) external onlyOpen nonReentrant returns (uint256 netCollateral) {
         require(outcomeId <= 1, "Invalid outcome");
         require(sharesIn > 0, "Amount must be > 0");
 
@@ -147,7 +147,7 @@ contract PredictionMarket is ERC1155Holder, ReentrancyGuard, Ownable {
         require(collateralOut >= minCollateralOut, "Slippage too high");
 
         uint256 fee = (collateralOut * feeBps) / FEE_DENOMINATOR;
-        uint256 netCollateral = collateralOut - fee;
+        netCollateral = collateralOut - fee;
 
         if (outcomeId == 0) {
             reserveYES = r0 + sharesIn;
